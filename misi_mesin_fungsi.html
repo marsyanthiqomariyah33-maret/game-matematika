@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f766e">
+<title>Misi Mesin Fungsi | Game Matematika XI</title>
+<style>
+:root{--teal:#0f766e;--mint:#d1fae5;--blue:#dbeafe;--gold:#fef3c7;--purple:#f3e8ff;--ink:#153047;--muted:#5d7182}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(145deg,#e0f2fe,#f0fdfa 50%,#fff7ed);color:var(--ink);min-height:100vh}
+.wrap{max-width:760px;margin:auto;padding:16px}.hero{background:linear-gradient(135deg,#0f766e,#0369a1);color:white;padding:24px;border-radius:24px;box-shadow:0 12px 28px #0f766e22}.hero h1{margin:0 0 8px;font-size:clamp(1.7rem,5vw,2.5rem)}.hero p{margin:0;line-height:1.5}.pill{display:inline-block;background:#ffffff25;border:1px solid #ffffff50;padding:5px 10px;border-radius:999px;font-size:.82rem;margin-bottom:10px}
+.card{background:#ffffffed;border:1px solid #d9e5ec;border-radius:20px;padding:20px;margin-top:16px;box-shadow:0 6px 18px #1232440b}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.progress{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:14px 0}.bar{height:100%;background:#0d9488;width:0;transition:width .2s}.tag{background:#ccfbf1;color:#115e59;border-radius:999px;padding:6px 10px;font-size:.82rem;font-weight:800}.score{font-weight:800;color:#0f766e}.machines{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.machine{border-radius:16px;padding:14px}.machine h3{margin:0 0 6px;font-size:.95rem}.machine p{margin:0;font-size:1.15rem;font-weight:800}.f{background:var(--gold)}.g{background:var(--mint)}.start{background:var(--blue);padding:12px;border-radius:12px;text-align:center;font-weight:700}.question{font-size:1.2rem;font-weight:800;line-height:1.45;margin:16px 0}.options{display:grid;gap:10px}.option{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:2px solid #dbe5eb;background:white;border-radius:14px;padding:13px;font:inherit;font-weight:700;color:var(--ink);cursor:pointer}.option .letter{width:32px;height:32px;display:grid;place-items:center;background:#eff6ff;border-radius:9px;flex-shrink:0}.option:disabled{cursor:default}.option.correct{border-color:#16a34a;background:#f0fdf4}.option.wrong{border-color:#dc2626;background:#fef2f2}.feedback{margin-top:14px;border-radius:14px;padding:15px;line-height:1.6;background:#f1f5f9}.btn{border:0;border-radius:13px;background:var(--teal);color:white;padding:13px 17px;font:inherit;font-weight:800;cursor:pointer;width:100%;margin-top:14px}.btn.secondary{background:#e2e8f0;color:#153047}.hidden{display:none}.small{font-size:.92rem;color:var(--muted);line-height:1.55}.rules{line-height:1.7;padding-left:20px}.footer{text-align:center;padding:20px;color:var(--muted);font-size:.82rem}
+@media(max-width:480px){.wrap{padding:11px}.hero,.card{padding:17px}.machines{grid-template-columns:1fr 1fr}.machine{padding:12px}.question{font-size:1.1rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+ <span class="pill">🎮 GAME MATEMATIKA KELAS XI SMK</span>
+ <h1>🤖 Misi Mesin Fungsi</h1>
+ <p>Masukkan angka ke mesin, ikuti urutannya, kumpulkan poin, dan jadilah ahli fungsi komposisi!</p>
+</header>
+
+<section class="card" id="intro">
+ <h2>🚀 Siap menjalankan misi?</h2>
+ <p>Ingat aturan utama: <b>(f ∘ g)(x) = f(g(x))</b>. Mesin <b>G</b> bekerja dahulu, kemudian hasilnya masuk ke mesin <b>F</b>.</p>
+ <div class="machines">
+  <div class="machine g"><h3>⚙️ MESIN G</h3><p>Proses pertama</p></div>
+  <div class="machine f"><h3>⚙️ MESIN F</h3><p>Proses kedua</p></div>
+ </div>
+ <ul class="rules">
+  <li>6 misi pilihan ganda.</li><li>Jawaban benar bernilai 10 poin.</li><li>Setiap soal dilengkapi pembahasan.</li>
+ </ul>
+ <button class="btn" onclick="startGame()">MULAI BERMAIN ▶</button>
+</section>
+
+<section class="card hidden" id="game">
+ <div class="row"><span class="tag" id="mission">MISI 1 DARI 6</span><span class="score" id="score">🏆 0 poin</span></div>
+ <div class="progress"><div class="bar" id="bar"></div></div>
+ <p id="story"></p>
+ <div class="machines">
+  <div class="machine f"><h3>🟨 MESIN F</h3><p id="ftext"></p></div>
+  <div class="machine g"><h3>🟩 MESIN G</h3><p id="gtext"></p></div>
+ </div>
+ <div class="start" id="inputNum"></div>
+ <div class="question" id="question"></div>
+ <div class="options" id="options"></div>
+ <div class="feedback hidden" id="feedback" aria-live="polite"></div>
+ <button class="btn hidden" id="next" onclick="nextQuestion()">Misi berikutnya ➜</button>
+</section>
+
+<section class="card hidden" id="result">
+ <h2>🏆 Misi selesai!</h2>
+ <p class="small" id="resultText"></p>
+ <h1 id="finalScore" style="text-align:center;color:#0f766e;font-size:2.6rem"></h1>
+ <div class="feedback"><b>Ingat konsep penting:</b><br>(f ∘ g)(x) = f(g(x))<br>Kerjakan fungsi di sebelah dalam, yaitu G, terlebih dahulu. Setelah itu, masukkan hasilnya ke fungsi F.</div>
+ <button class="btn" onclick="restart()">🔄 Main lagi</button>
+ <button class="btn secondary" onclick="window.print()">🖨️ Cetak hasil</button>
+</section>
+<div class="footer">Misi Mesin Fungsi • Media belajar interaktif • Matematika Kelas XI</div>
+</div>
+<script>
+const qs=[
+{story:"Mesin G menggandakan angka, lalu Mesin F menambahkan 3.",f:"f(x) = x + 3",g:"g(x) = 2x",x:4,q:"Berapakah (f ∘ g)(4)?",o:["11","14","8","7"],a:0,e:"Kerjakan G dahulu: g(4) = 2 × 4 = 8. Lalu F: f(8) = 8 + 3 = 11. Jadi, jawabannya 11."},
+{story:"Mesin G menambahkan 5, lalu Mesin F mengalikan hasilnya dengan 2.",f:"f(x) = 2x",g:"g(x) = x + 5",x:3,q:"Berapakah (f ∘ g)(3)?",o:["11","16","13","6"],a:1,e:"g(3) = 3 + 5 = 8. Kemudian f(8) = 2 × 8 = 16. Jawabannya 16."},
+{story:"Mesin G menguadratkan angka, lalu Mesin F mengurangi hasilnya dengan 1.",f:"f(x) = x − 1",g:"g(x) = x²",x:3,q:"Berapakah (f ∘ g)(3)?",o:["5","8","9","6"],a:1,e:"g(3) = 3² = 9. Lalu f(9) = 9 − 1 = 8. Jawabannya 8."},
+{story:"Mesin G mengurangi angka dengan 2, lalu Mesin F mengalikan hasilnya dengan 3.",f:"f(x) = 3x",g:"g(x) = x − 2",x:7,q:"Berapakah (f ∘ g)(7)?",o:["15","21","19","5"],a:0,e:"g(7) = 7 − 2 = 5. Lalu f(5) = 3 × 5 = 15. Jawabannya 15."},
+{story:"Mesin G mengalikan angka dengan 2, lalu Mesin F menguadratkan hasilnya.",f:"f(x) = x²",g:"g(x) = 2x",x:3,q:"Berapakah (f ∘ g)(3)?",o:["12","18","36","9"],a:2,e:"g(3) = 2 × 3 = 6. Lalu f(6) = 6² = 36. Ingat, hasil mesin pertama menjadi masukan mesin kedua."},
+{story:"Urutan dibalik! Mesin F menambahkan 4, lalu Mesin G mengalikan hasilnya dengan 2.",f:"f(x) = x + 4",g:"g(x) = 2x",x:3,q:"Berapakah (g ∘ f)(3)?",o:["10","14","12","7"],a:1,e:"Karena (g ∘ f), kerjakan F lebih dahulu: f(3) = 7. Lalu g(7) = 2 × 7 = 14. Urutan komposisi menentukan hasil."}
+];
+let i=0,score=0,answered=false,correct=0;
+function startGame(){document.getElementById('intro').classList.add('hidden');document.getElementById('result').classList.add('hidden');document.getElementById('game').classList.remove('hidden');i=0;score=0;correct=0;render()}
+function render(){answered=false;const q=qs[i];document.getElementById('mission').textContent=`MISI ${i+1} DARI ${qs.length}`;document.getElementById('score').textContent=`🏆 ${score} poin`;document.getElementById('bar').style.width=`${(i+1)/qs.length*100}%`;document.getElementById('story').textContent=q.story;document.getElementById('ftext').textContent=q.f;document.getElementById('gtext').textContent=q.g;document.getElementById('inputNum').textContent=`🔢 ANGKA AWAL: ${q.x}`;document.getElementById('question').textContent=q.q;document.getElementById('feedback').classList.add('hidden');document.getElementById('next').classList.add('hidden');document.getElementById('next').textContent=i===qs.length-1?'Lihat hasil akhir 🏁':'Misi berikutnya ➜';const box=document.getElementById('options');box.innerHTML='';q.o.forEach((v,n)=>{const b=document.createElement('button');b.className='option';b.innerHTML=`<span class="letter">${'ABCD'[n]}</span><span>${v}</span>`;b.onclick=()=>answer(n);box.appendChild(b)})}
+function answer(n){if(answered)return;answered=true;const q=qs[i],buttons=[...document.querySelectorAll('.option')];buttons.forEach((b,j)=>{b.disabled=true;if(j===q.a)b.classList.add('correct');if(j===n&&n!==q.a)b.classList.add('wrong')});if(n===q.a){score+=10;correct++;document.getElementById('feedback').innerHTML='<b>🎉 Hebat! Jawaban benar.</b><br>'+q.e}else{document.getElementById('feedback').innerHTML='<b>💡 Belum tepat. Pelajari langkahnya, ya!</b><br>'+q.e}document.getElementById('score').textContent=`🏆 ${score} poin`;document.getElementById('feedback').classList.remove('hidden');document.getElementById('next').classList.remove('hidden')}
+function nextQuestion(){if(i<qs.length-1){i++;render()}else{document.getElementById('game').classList.add('hidden');document.getElementById('result').classList.remove('hidden');document.getElementById('finalScore').textContent=`${score} / 60`;document.getElementById('resultText').textContent=`Kamu menjawab ${correct} dari ${qs.length} soal dengan benar. ${score>=50?'Luar biasa! Kamu ahli mesin fungsi!':score>=30?'Bagus! Terus berlatih!':'Tetap semangat. Baca pembahasan dan coba lagi!'}`}}
+function restart(){document.getElementById('result').classList.add('hidden');document.getElementById('intro').classList.remove('hidden');document.getElementById('game').classList.add('hidden')}
+</script>
+</body>
+</html>
